@@ -16,6 +16,12 @@ export interface Game {
     }
 }
 
+//TODO Make web responsive
+//TODO Put the game list into a carousel (recommended: https://keen-slider.io)
+//TODO Make validation with warning style (recommended: https://react-hook-form.com)
+//TODO Integration with Twitch (get up streaming games)
+//TODO Integration with Discord (auto load discord tag)
+
 function App() {
     const [games, setGames] = useState<Game[]>([]);
 
