@@ -9,10 +9,12 @@ import logo from '../../assets/logo-nlw-esports.png';
 import { Heading } from '../../components/Heading';
 import { AdsProps, DuoCard } from '../../components/DuoCard';
 import { useEffect, useState } from 'react';
+import { DuoMatch } from '../../components/DuoMatch';
 
 
 export function Game() {
     const [ads, setAds] = useState<AdsProps[]>([]);
+    const [discord, setDiscord] = useState<string>('');
     const route = useRoute();
     const navigation = useNavigation();
     const game = route.params as GameCardProps;
@@ -25,13 +27,15 @@ export function Game() {
             .then(setAds)
     }
 
-    function onConnectDuo() {
-
+    async function onConnectDuo(id: string) {
+        await fetch(`http://192.168.0.168/ads/${ id }/discord`)
+            .then(response => response.json())
+            .then(({ discord }) => setDiscord(discord))
     }
-    
+
     function renderDouCard(ad: AdsProps) {
         return (
-            <DuoCard data={ ad } onConnect={ onConnectDuo }/>
+            <DuoCard data={ ad } onConnect={ () => onConnectDuo(ad.id) }/>
         );
     }
 
@@ -63,6 +67,8 @@ export function Game() {
                       horizontal
                       showsHorizontalScrollIndicator={ false }
                       ListEmptyComponent={ renderEmptyList }/>
+
+            <DuoMatch discord={ discord } visible={ !!discord.length } onClose={ () => setDiscord('') }/>
         </SafeAreaView>
     );
 }
